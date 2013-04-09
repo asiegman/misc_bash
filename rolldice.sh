@@ -2,6 +2,8 @@
 
 NUMBER_DIE=$1
 SIZE_DIE=$2
+TOTAL_ONLY=1
+[[ -z "$3" ]] && TOTAL_ONLY=0
 MAX_ROLLS=500
 LARGEST_DIE=100
 
@@ -11,7 +13,7 @@ LARGEST_DIE=100
 [[ $NUMBER_DIE -le 0 ]] && echo "Okay, I just won't roll any dice then." && exit 1
 [[ $NUMBER_DIE -gt $MAX_ROLLS ]] && echo "My arm will get tired if I try to roll that many!" && exit 1
 
-echo "Rolling ${NUMBER_DIE}d${SIZE_DIE}"
+[[ $TOTAL_ONLY -eq 0 ]] && echo "Rolling ${NUMBER_DIE}d${SIZE_DIE}"
 
 sum=0
 
@@ -21,8 +23,8 @@ do
   let "roll %= $SIZE_DIE" # leave it to be a d6
   let "roll += 1" # increment by one (there's no zero on a die)
   let "sum += roll"
-  echo "Roll $i = $roll"
+  [[ $TOTAL_ONLY -eq 0 ]] && echo "Roll $i = $roll"
 done
 
-echo
-echo "Total = $sum"
+[[ $TOTAL_ONLY -eq 0 ]] && echo && echo -n "Total = "
+echo $sum
